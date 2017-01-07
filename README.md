@@ -10,7 +10,7 @@ Attach a target postgres container to this container and mount a volume to conta
 ## Environment Variables:
 | Variable | Required? | Default | Description |
 | -------- |:--------- |:------- |:----------- |
-| `PGUSER` | Required | postgres | The user for accessing the database |
+| `PGUSER` | Optional | postgres | The user for accessing the database |
 | `PGPASSWORD` | Optional | `None` | The password for accessing the database |
 | `PGDB` | Optional | postgres | The name of the database |
 | `PGHOST` | Optional | db | The hostname of the database |
