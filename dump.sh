@@ -5,14 +5,16 @@ set -e
 echo "Job started: $(date)"
 
 DATE=$(date +%Y%m%d_%H%M%S)
-FILE="/dump/$PREFIX-$DATE.sqlc"
+FILENAME="$PREFIX-$DATE.sqlc"
+FILE="/dump/${FILENAME}"
 
 pg_dump -Fc -h "$PGHOST" -U "$PGUSER" -f "$FILE" -d "$PGDB"
 
 if [[ -n "$S3_BUCKET" ]] && [[ -n "$S3_ACCESS_KEY" ]] && [[ -n "$S3_SECRET_KEY" ]]; then
 
+    echo "Uploading to https://${S3_BUCKET}.s3.amazonaws.com/${FILENAME}"
     # upload to s3 via bash from http://superuser.com/a/823599/51440
-    resource="/${S3_BUCKET}/${FILE}"
+    resource="/${S3_BUCKET}/${FILENAME}"
     contentType="application/octet-stream"
     dateValue=`date -R`
     stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
@@ -22,7 +24,8 @@ if [[ -n "$S3_BUCKET" ]] && [[ -n "$S3_ACCESS_KEY" ]] && [[ -n "$S3_SECRET_KEY" 
       -H "Date: ${dateValue}" \
       -H "Content-Type: ${contentType}" \
       -H "Authorization: AWS ${S3_ACCESS_KEY}:${signature}" \
-      https://${S3_BUCKET}.s3.amazonaws.com/${FILE}
+      https://${S3_BUCKET}.s3.amazonaws.com/${FILENAME}
+
 fi
 
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
@@ -31,4 +34,4 @@ if [ ! -z "$DELETE_OLDER_THAN" ]; then
 fi
 
 
-echo "Job finished: $(date)"
+echo "Job finished: $(date) - ${PREFIX}-${DATE}.sqlc"
