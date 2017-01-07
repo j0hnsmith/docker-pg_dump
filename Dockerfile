@@ -1,7 +1,7 @@
 FROM postgres:latest
 
 RUN apt-get update && \
-    apt-get install -y cron && \
+    apt-get install -y cron curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ADD dump.sh /dump.sh
