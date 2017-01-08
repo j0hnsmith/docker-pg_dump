@@ -21,11 +21,23 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     if [ -n "$PGPASSWORD" ]; then
         CRON_ENV="$CRON_ENV\nPGPASSWORD='$PGPASSWORD'"
     fi
-    
+
+    if [ -n "$S3_BUCKET" ]; then
+        CRON_ENV="$CRON_ENV\nS3_BUCKET='$S3_BUCKET'"
+    fi
+
+    if [ -n "$S3_ACCESS_KEY" ]; then
+        CRON_ENV="$CRON_ENV\nS3_ACCESS_KEY='$S3_ACCESS_KEY'"
+    fi
+
+    if [ -n "$S3_SECRET_KEY" ]; then
+        CRON_ENV="$CRON_ENV\nS3_SECRET_KEY='$S3_SECRET_KEY'"
+    fi
+
     if [ ! -z "$DELETE_OLDER_THAN" ]; then
     	CRON_ENV="$CRON_ENV\nDELETE_OLDER_THAN='$DELETE_OLDER_THAN'"
     fi
-    
+
     echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
     crontab -l
     cron

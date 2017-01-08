@@ -10,12 +10,15 @@ Attach a target postgres container to this container and mount a volume to conta
 ## Environment Variables:
 | Variable | Required? | Default | Description |
 | -------- |:--------- |:------- |:----------- |
-| `PGUSER` | Required | postgres | The user for accessing the database |
+| `PGUSER` | Optional | postgres | The user for accessing the database |
 | `PGPASSWORD` | Optional | `None` | The password for accessing the database |
 | `PGDB` | Optional | postgres | The name of the database |
 | `PGHOST` | Optional | db | The hostname of the database |
 | `CRON_SCHEDULE` | Required | 0 1 * * * | The cron schedule at which to run the pg_dump |
-| `DELETE_OLDER_THAN` | Optional | `None` | Optionally, delete files older than `DELETE_OLDER_THAN` minutes. Do not include `+` or `-`. |
+| `DELETE_OLDER_THAN` | Optional | `None` | Optionally, delete files older than `DELETE_OLDER_THAN` minutes from the local file system (not S3). Do not include `+` or `-`. |
+| `S3_BUCKET` | Optional | `None` | The S3 bucket to upload to |
+| `S3_ACCESS_KEY` | Optional | `None` | The S3 access key to use |
+| `S3_SECRET_KEY` | Optional | `None` | The S3 secret key to use |
 
 Example:
 ```
